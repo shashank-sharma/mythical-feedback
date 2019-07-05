@@ -4,6 +4,7 @@ import Footer from './components/footer';
 import ExcelData from './components/exceldata';
 import ScriptBuilder from './components/ScriptBuilder';
 import LoginComponent from './components/LoginComponent';
+import Experiment from './components/Experiment';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import M from 'materialize-css'
 import './App.css'
@@ -43,6 +44,7 @@ class App extends Component {
                             <Route path='/excel' component={ExcelData}/>
                             <Route path='/script-builder' component={ScriptBuilder}/>
                             <Route path='/login' component={LoginComponent}/>
+                            <Route path='/experiment' component={Experiment}/>
                         </Switch>
                         {/*<Footer />*/}
                     </div>
