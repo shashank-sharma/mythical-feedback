@@ -2,12 +2,16 @@
   "name": "backend",
   "version": "1.0.0",
   "main": "index.js",
+  "engines": {
+    "npm": "6.7.0",
+    "node": "11.12.0"
+  },
   "repository": "",
   "author": "Shashank Sharma",
   "license": "MIT",
   "private": true,
   "scripts": {
-    "heroku-prebuild": "NODE_ENV=production cd frontend/ && yarn install && yarn build && cd .."
+    "heroku-prebuild": "NODE_ENV=production cd frontend/ && npm install && npm build && cd .."
   },
   "cacheDirectories": [
     "frontend/node_modules"
