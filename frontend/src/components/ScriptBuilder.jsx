@@ -73,6 +73,7 @@ class ScriptBuilder extends React.Component {
         fromPhoneNumber: '',
         sliderTimer: 40,
         tempColor: '#525252',
+        theme: 'light'
     };
 
     componentWillMount() {
@@ -115,6 +116,14 @@ class ScriptBuilder extends React.Component {
                 helperSlider: true,
             });
         }
+
+        const theme = localStorage.getItem("theme");
+        if (theme && (theme === 'light' || theme === 'dark')) {
+            console.log('Setting theme as', theme);
+            this.setState({
+                theme: theme
+            });
+        }
     }
 
     componentDidMount() {
@@ -144,6 +153,7 @@ class ScriptBuilder extends React.Component {
             noWrap: true,
             enableTouch: false,
         });
+        this.applyTheme();
     }
 
     componentWillUnmount() {
@@ -744,9 +754,59 @@ class ScriptBuilder extends React.Component {
         e.target.src = image;
     }
 
+    changeTheme() {
+        const theme = this.state.theme;
+        if (theme === 'light') {
+            this.setState({
+                theme: 'dark'
+            });
+            localStorage.setItem('theme', 'dark');
+        } else {
+            this.setState({
+                theme: 'light'
+            });
+            localStorage.setItem('theme', 'light')
+        }
+        this.applyTheme();
+    }
+
+    applyTheme() {
+        const currentTheme = localStorage.getItem('theme');
+        const demoCanvas = document.getElementsByClassName('srd-demo-canvas')[0];
+        const demoCanvasList = document.getElementsByClassName('srd-demo-canvas')[0].classList;
+        const tempDemoCanvasList = [];
+        for (let i=0; i<demoCanvasList.length; i++) {
+            tempDemoCanvasList.push(demoCanvasList[i]);
+        }
+        if (currentTheme === 'light') {
+            if (tempDemoCanvasList.includes('dark')) {
+                demoCanvas.classList.remove('dark');
+            }
+            demoCanvas.classList.add('light')
+        } else {
+            if (tempDemoCanvasList.includes('light')) {
+                demoCanvas.classList.remove('light');
+            }
+            demoCanvas.classList.add('dark')
+        }
+    }
+
     render() {
         return (
             <div>
+                <div className={"script-theme"}>
+                    {(this.state.theme === 'light') ?
+                        <i className={"material-icons black-text tooltipped"} data-position="top" data-tooltip="Switch to Dark Theme"
+                           onClick={() => {
+                               this.changeTheme()
+                           }}>brightness_7</i>
+                        :
+                        <i className={"material-icons white-text tooltipped"} data-position="top" data-tooltip="Switch to Light Theme"
+                           onClick={() => {
+                               this.changeTheme()
+                           }}>brightness_3</i>
+                    }
+                </div>
                 <div className={"call-button"}>
                     <CallButton handleInput={this.callHandleInput} callPhone={this.callPhone}/>
                 </div>
@@ -1021,14 +1081,14 @@ class ScriptBuilder extends React.Component {
                             const points = this.engine.getRelativeMousePoint(event);
                             if (data.type === 'in') {
                                 node = new DefaultNodeModel('Node ' + (nodesCount + 1), '#757575');
-                                node.addPort(new DefaultPortModel(true, 'in-1', 'In'));
+                                node.addPort(new DefaultPortModel(true, 'in-1', ' '));
                             } else if (data.type === 'out') {
                                 node = new DefaultNodeModel('Node ' + (nodesCount + 1), '#757575');
-                                node.addPort(new DefaultPortModel(false, 'out-1', 'Out'));
+                                node.addPort(new DefaultPortModel(false, 'out-1', ' '));
                             } else if (data.type === 'out-in') {
                                 node = new DefaultNodeModel('Node ' + (nodesCount + 1), '#757575');
-                                node.addPort(new DefaultPortModel(false, 'out-in-11', 'In'));
-                                node.addPort(new DefaultPortModel(true, 'out-in-12', 'Out'));
+                                node.addPort(new DefaultPortModel(false, 'out-in-11', ' '));
+                                node.addPort(new DefaultPortModel(true, 'out-in-12', ' '));
                             } else {
                                 // Diamond node created
                                 node = new DiamondNodeModel();
