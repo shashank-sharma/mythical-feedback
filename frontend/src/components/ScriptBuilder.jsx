@@ -771,7 +771,7 @@ class ScriptBuilder extends React.Component {
     }
 
     applyTheme() {
-        const currentTheme = localStorage.getItem('theme');
+        const currentTheme = localStorage.getItem('theme') || 'light';
         const demoCanvas = document.getElementsByClassName('srd-demo-canvas')[0];
         const demoCanvasList = document.getElementsByClassName('srd-demo-canvas')[0].classList;
         const tempDemoCanvasList = [];
